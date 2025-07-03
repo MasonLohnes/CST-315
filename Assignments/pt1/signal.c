@@ -19,7 +19,7 @@ int produce(){
 }
 
 void consume(int i){
-	printf("%i", i);
+	printf("%i\n", i);
 }
 
 void put(int i){
