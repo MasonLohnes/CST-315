@@ -7,3 +7,5 @@ Ctrl + X to exit, Ctrl + C to stop a process.
 To run in batch, ./finalShell batchFile
 The provided test batch file is testBatch.
 
+Software Requirements:
+A Linux operating system or usable alternative. (Ubuntu for example)
