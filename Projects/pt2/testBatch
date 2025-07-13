@@ -1,0 +1,12 @@
+# Comments should be ignored (not executed)
+echo "Starting batch file test..."
+
+# Test basic commands
+ls -l
+whoami
+pwd
+
+whoami; ls
+
+# Test command sequences
+date; cal 2024
