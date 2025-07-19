@@ -1,0 +1,16 @@
+# Test built-in help command
+help
+
+# Test current directory (cd with no arguments)
+cd
+
+# Test going to home directory
+cd HOME
+cd
+
+# Test going to /tmp (you can change this if you're on Windows WSL)
+cd /tmp
+cd
+
+# Test invalid directory
+cd /notarealpath
