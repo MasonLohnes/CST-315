@@ -1,3 +1,10 @@
+// Mason Lohnes, CST-315, Assignment 3: Deadlock Avoidance
+// 	This code creates multiple threads all trying to get the same resource,
+// though a mutex keeps it exclusive. If a process cannot get the resource
+// for 5 seconds, it starves and restarts.
+//
+// All of this is output, and a run is logged in output.txt.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -22,7 +29,7 @@ void *run_process(void *arg) {
 
                 time_t start = time(NULL);
 
-                // Try acquiring the lock for up to STARVATION_TIMEOUT seconds
+                // Try acquiring the lock for up to 5 seconds
                 while (time(NULL) - start < 5) {
                         if (pthread_mutex_trylock(&lock) == 0) {
                                 acquired = 1;
