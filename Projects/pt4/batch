@@ -1,0 +1,43 @@
+# VMM Demo Batch File - test.bat
+# This demonstrates the Virtual Memory Manager functionality
+
+# Turn on VMM verbose output to see what's happening
+vmm
+
+# Show initial VMM status
+# (VMM status is automatically shown when verbose is turned on)
+
+# Run some basic commands to allocate memory and see VMM in action
+# Each command will allocate different amounts of memory (1-4 pages)
+whoami
+pwd
+date
+ls
+
+# Run more commands to start filling up memory
+who
+ls -la
+pwd
+date
+
+# Fill up even more memory to trigger page evictions
+whoami
+who
+ls
+pwd
+date
+whoami
+ls -la
+
+# Demonstrate the fillmem command which forces FIFO eviction
+fillmem
+
+# Run a few more commands to see VMM working after fillmem
+ls
+pwd
+whoami
+
+# Show final VMM status
+# (This will be shown automatically since verbose is on)
+
+# Commands will finish and clean up automatically
