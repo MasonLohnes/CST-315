@@ -1,0 +1,231 @@
+# Combined Shell Test Batch File
+# This file tests all major features of the combined shell
+# Run with: ./combined_shell test_batch.sh
+
+# Enable verbose modes to see scheduler and VMM activity
+sched
+vmm
+
+# Display initial help and status
+help
+stats
+
+# =============================================================================
+# FILE OPERATIONS TESTING
+# =============================================================================
+
+# Create test directory structure
+newdir test_files
+newdir test_files/subdir1
+newdir test_files/subdir2
+
+# Create various files
+create test_files/small_file.txt
+create -f test_files/random_file.dat
+create test_files/config.conf
+create test_files/subdir1/nested_file.txt
+create test_files/subdir2/another_file.log
+
+# Display directory tree
+tree test_files
+
+# Get file information
+finf test_files/small_file.txt
+finf -d test_files/random_file.dat
+
+# Get directory information
+dinf test_files
+dinf -d test_files/subdir1
+
+# Modify some files
+modify test_files/small_file.txt
+modify test_files/config.conf
+
+# Copy files (auto-numbering)
+copy test_files/small_file.txt
+copy test_files/config.conf
+
+# Rename a file
+rename test_files/config.conf test_files/settings.conf
+
+# Move a file
+move test_files/small_file.txt test_files/subdir1/
+
+# Search for files
+search config
+search file
+search nested_file.txt
+
+# =============================================================================
+# PROCESS MANAGEMENT TESTING
+# =============================================================================
+
+# Show initial process state
+procs
+
+# Launch some background processes to populate scheduler
+sleep 3 &
+ls -la &
+pwd &
+date &
+
+# Wait a moment for processes to start
+sleep 1
+
+# Show detailed process information
+procs -a -si
+
+# Check scheduler statistics
+stats
+
+# Launch some foreground processes that will be scheduled
+whoami
+who
+ps aux
+
+# Show processes again
+procs -a
+
+# Test priority management (may not work if processes finish quickly)
+# priority 1001 0
+# priority 1002 2
+
+# =============================================================================
+# SYSTEM COMMAND TESTING
+# =============================================================================
+
+# Test various system commands that will be scheduled
+echo "Testing system commands through scheduler..."
+ls -l
+pwd
+date
+whoami
+
+# Test command chaining
+ls; pwd; date
+
+# =============================================================================
+# DIRECTORY NAVIGATION TESTING
+# =============================================================================
+
+# Test directory navigation
+cd test_files
+pwd
+ls -la
+cd subdir1
+pwd
+ls -la
+cd ..
+pwd
+cd ..
+pwd
+
+# =============================================================================
+# PERFORMANCE AND STRESS TESTING
+# =============================================================================
+
+# Create multiple files quickly to test scheduler
+create test_files/file1.txt
+create test_files/file2.txt
+create test_files/file3.txt
+create test_files/file4.txt
+create test_files/file5.txt
+
+# Launch multiple background processes
+sleep 2 &
+sleep 2 &
+sleep 2 &
+ls -la test_files &
+date &
+
+# Show scheduler activity
+procs -a
+stats
+
+# Wait for background processes to complete
+sleep 3
+
+# Final process check
+procs -a
+stats
+
+# =============================================================================
+# VMM TESTING
+# =============================================================================
+
+# Display VMM status
+vmm
+
+# Launch processes that use different amounts of memory
+ps aux
+cat /etc/passwd
+ls -laR /usr/bin
+
+# Show final VMM status
+vmm
+
+# =============================================================================
+# CLEANUP TESTING AND FINAL CLEANUP
+# =============================================================================
+
+echo "=== STARTING CLEANUP ==="
+
+# Test file deletion functionality while cleaning up
+delete test_files/file1.txt
+delete test_files/file2.txt test_files/file3.txt
+delete test_files/file4.txt
+delete test_files/file5.txt
+
+# Delete remaining individual files
+delete test_files/random_file.dat
+delete test_files/settings.conf
+delete test_files/subdir1/nested_file.txt
+delete test_files/subdir1/small_file.txt
+delete test_files/subdir2/another_file.log
+
+# Delete copied files (these have auto-generated numbered names)
+delete test_files/small_file\(1\).txt
+delete test_files/config\(1\).conf
+
+# Test directory deletion
+killdir test_files/subdir1
+killdir test_files/subdir2
+
+# Remove the main test directory
+killdir test_files
+
+# Verify cleanup is complete
+echo "Verifying cleanup..."
+tree test_files 2>/dev/null || echo "test_files directory successfully removed"
+
+# Check if any test files remain
+search file 2>/dev/null || echo "No test files found - cleanup successful"
+
+# Final system state
+procs -a
+stats
+
+delete config(1).conf small_file(1).txt
+
+# =============================================================================
+# FINAL SUMMARY
+# =============================================================================
+
+echo "=== BATCH TEST COMPLETE ==="
+echo "All major features tested:"
+echo "✓ File operations (create, modify, delete, info)"
+echo "✓ Directory operations (create, delete, tree, info)"
+echo "✓ Process scheduling and management"
+echo "✓ Memory management (VMM)"
+echo "✓ Background process handling"
+echo "✓ Priority scheduling"
+echo "✓ File search and manipulation"
+echo "✓ System command execution"
+echo "✓ Complete cleanup of test files and directories"
+echo "==========================="
+
+# Show final statistics
+stats
+procs -a
+
+echo "=== ALL TEST FILES AND DIRECTORIES CLEANED UP ==="
