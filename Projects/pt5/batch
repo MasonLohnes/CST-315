@@ -1,0 +1,69 @@
+# Quick Test - Background Processes, Scheduler, Procs Commands, and Memory Layout
+# Should complete in under 30 seconds
+
+# Enable verbose output to see memory allocations
+sched
+vmm
+
+# Show initial empty memory state
+echo "=== Initial Memory State ==="
+vmm
+procs -a
+
+# Test 1: Basic background processes with different memory footprints
+echo "=== Testing Background Processes ==="
+sleep 5 &
+sleep 3 &
+sleep 2 &
+
+# Show memory allocation after process creation
+echo "=== Memory After Background Process Creation ==="
+vmm
+procs -a
+procs -a -si
+
+# Test 2: Add more processes with varying memory needs
+echo "=== Adding More Processes ==="
+ls &
+ps &
+whoami
+cat /etc/passwd | head -5 &
+
+# Show memory usage with mixed process types
+echo "=== Memory Layout with Mixed Processes ==="
+vmm
+procs -a
+stats
+
+# Test 3: Memory-intensive processes
+echo "=== Memory-Intensive Process Test ==="
+find /usr -name "*.txt" 2>/dev/null | head -3 &
+ps aux &
+
+# Show memory utilization
+echo "=== Current Memory Utilization ==="
+vmm
+procs -a -si
+
+# Test 4: Quick priority test (use actual PID from above)
+# priority [PID] 0
+
+# Test 5: Monitor memory as processes complete
+echo "=== Monitoring Memory During Process Completion ==="
+sleep 2
+vmm
+procs -a
+
+sleep 3
+echo "=== Memory After Some Processes Complete ==="
+vmm
+procs -a -si
+stats
+
+# Final memory state
+echo "=== Final Memory and System State ==="
+vmm
+procs -a -si
+stats
+
+echo "=== Quick Test Complete ==="
